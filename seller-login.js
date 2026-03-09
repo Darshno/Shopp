@@ -86,6 +86,4 @@ async function sellerSignup() {
     }, 1000);
 }
 
-    }, 1000);
-}
 
