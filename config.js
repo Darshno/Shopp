@@ -1,10 +1,6 @@
 // API Configuration
-// Change this to your deployed backend URL when deploying
-const API_BASE_URL = window.location.port === '5500' || window.location.protocol === 'file:'
-    ? 'http://localhost:5000'
-    : window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
-        : window.location.origin;
+// Automatically uses the same domain for API calls
+const API_BASE_URL = window.location.origin;
 
 const API_ENDPOINTS = {
     products: `${API_BASE_URL}/api/products`,
@@ -16,3 +12,4 @@ const API_ENDPOINTS = {
     sellerProducts: `${API_BASE_URL}/api/seller-products`,
     deleteProduct: (id) => `${API_BASE_URL}/api/delete-product/${id}`
 };
+
