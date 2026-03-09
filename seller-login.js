@@ -35,7 +35,7 @@ async function sellerLogin() {
         return;
     }
 
-    const res = await fetch("http://localhost:5000/api/login", {
+    const res = await fetch(API_ENDPOINTS.login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -64,7 +64,7 @@ async function sellerSignup() {
         return;
     }
 
-    const res = await fetch("http://localhost:5000/api/signup", {
+    const res = await fetch(API_ENDPOINTS.signup, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password })
@@ -85,3 +85,7 @@ async function sellerSignup() {
         sellerLogin();
     }, 1000);
 }
+
+    }, 1000);
+}
+
