@@ -1,6 +1,10 @@
 // API Configuration
-// Automatically uses the same domain for API calls
-const API_BASE_URL = window.location.origin;
+// Force production URL if on Render, otherwise use current origin
+const API_BASE_URL = window.location.hostname.includes('render.com')
+    ? 'https://shopp-3d74.onrender.com'
+    : window.location.origin;
+
+console.log('API Base URL:', API_BASE_URL); // Debug log
 
 const API_ENDPOINTS = {
     products: `${API_BASE_URL}/api/products`,
@@ -12,4 +16,5 @@ const API_ENDPOINTS = {
     sellerProducts: `${API_BASE_URL}/api/seller-products`,
     deleteProduct: (id) => `${API_BASE_URL}/api/delete-product/${id}`
 };
+
 
