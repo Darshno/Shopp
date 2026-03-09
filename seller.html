@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Seller Dashboard</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="store.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="store.png?v=1">
+    <link rel="shortcut icon" href="store.png?v=1">
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+    <script>
+      // Load saved theme immediately
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.getElementById('pageStyle').setAttribute('href', savedTheme);
+        }
+      })();
+    </script>
+    <style>
+      .dashboard-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px;
+        background: white;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      }
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .product {
+        background: #f8f9fa;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+      input,
+      textarea {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px;
+        margin: 10px 0;
+        border: 2px solid #e9ecef;
+        font-size: 16px;
+      }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #11998e;
+      }
+      button {
+        padding: 12px 24px;
+        margin: 5px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .btn-primary {
+        background: #005a24;
+        color: white;
+      }
+      .btn-primary:hover {
+        background: #38ef7d;
+        color: black;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+      }
+      .btn-secondary {
+        background: #6c757d;
+        color: white;
+      }
+      .btn-secondary:hover {
+        background: #cadcee;
+        color: rgb(22, 21, 21);
+      }
+      .btn-danger {
+        background: #dc3545;
+        color: white;
+      }
+    </style>
+  </head>
+  <body class="bg-green">
+    <script>
+      // Load saved theme immediately
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.getElementById('pageStyle').setAttribute('href', savedTheme);
+        }
+      })();
+    </script>
+    <div class="header">
+      <div class="header-top">
+        <div class="header-brand">
+          <h1><a href="index.html"><img src="store.png" alt="Store" style="height: 40px; vertical-align: middle; margin-right: 10px;">Store</a></h1>
+        </div>
+        
+        <div class="header-search">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search products..." 
+            onkeypress="if(event.key==='Enter') window.location.href='index.html?search='+encodeURIComponent(this.value)"
+          />
+          <span class="material-symbols-outlined" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #666; pointer-events: none;">search</span>
+        </div>
+        
+        <div class="header-actions">
+          <div class="coin-badge">
+            <span id="userCoins">0</span> Coins
+          </div>
+          <button class="theme-toggle" onclick="swapStyleSheet()">Girl theme</button>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+      
+      <div class="header-nav">
+        <a href="index.html"> Home</a>
+        <a href="game.html"> Play Game</a>
+        <a href="cart.html"> Cart</a>
+        <a href="wishlist.html"> Wishlist</a>
+        <a href="orders.html"> Orders</a>
+        <a href="admin-orders.html"> All Orders</a>
+      </div>
+      
+      <div>
+        <h2 id="welcome" align="center"></h2>
+      </div>
+    </div>
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <h2 class="seller-title">Seller Dashboard</h2>
+        <div>
+          <span id="sellerName" class="seller-name"></span>
+          <button
+            class="btn-secondary"
+            onclick="window.location.href = 'admin-orders.html'"
+          >
+            View All Orders
+          </button>
+          <button class="btn-danger" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <h3 class="seller-section-title">Upload Product</h3>
+
+      <input id="name" placeholder="Product Name" />
+      <input id="price" type="number" placeholder="Price" />
+      <textarea id="description" placeholder="Description" rows="4"></textarea>
+      <input id="image" placeholder="Image URL" />
+      <input id="type" placeholder="Type (e.g., Electronics, Clothing)" />
+
+      <button class="btn-primary" onclick="uploadProduct()">
+        Upload Product
+      </button>
+
+      <hr class="seller-divider" />
+
+      <h2 class="seller-title">Your Products</h2>
+      <div id="productList"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="toast.js"></script>
+    <script src="theme.js"></script>
+    <script src="seller.js"></script>
+  </body>
+</html>

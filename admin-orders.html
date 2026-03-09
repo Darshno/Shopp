@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <title>All Orders - Admin</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="store.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="store.png?v=1">
+    <link rel="shortcut icon" href="store.png?v=1">
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+    <style>
+      .dashboard-container {
+        max-width: 1400px;
+        margin: 40px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="bg-green">
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+    <div class="header">
+      <div>
+        <h1><a href="index.html"><img src="store.png" alt="Store" style="height: 40px; vertical-align: middle; margin-right: 10px;">Store </a></h1>
+        <a href="game.html"> Play Game</a>
+        <a href="orders.html"> Orders</a>
+        <a href="seller-login.html"> Seller</a>
+        <a href="cart.html"> Cart</a>
+        <a href="wishlist.html"> Wishlist</a>
+        <a href="client.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <div class="coin-display">
+          <div class="coin-badge"><span id="userCoins">0</span> Coins</div>
+        </div>
+        <button onclick="logout()">Logout</button>
+      </div>
+      <div>
+        <h2 id="welcome" align="center"></h2>
+      </div>
+    </div>
+    <div class="dashboard-container">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          flex-wrap: wrap;
+          gap: 15px;
+        "
+      >
+        <h2 style="color: #11998e">All Customer Orders</h2>
+        <div>
+          <a
+            href="seller.html"
+            style="color: #11998e; text-decoration: none; font-weight: 600"
+            >← Back to Dashboard</a
+          >
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <h3 id="totalOrders">0</h3>
+          <p>Total Orders</p>
+        </div>
+        <div
+          class="stat-card"
+          style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%)"
+        >
+          <h3 id="totalRevenue">₹0</h3>
+          <p>Total Revenue</p>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by customer name, phone, or order ID"
+        />
+        <button onclick="filterOrders()">Search</button>
+        <button onclick="clearFilter()" style="background: #6c757d">
+          Clear
+        </button>
+      </div>
+
+      <div id="orders"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="toast.js"></script>
+    <script src="theme.js"></script>
+    <script src="admin-orders.js"></script>
+  </body>
+</html>

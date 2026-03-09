@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+  </head>
+  <body>
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+    <div class="auth-container">
+      <div class="auth-box">
+        <h2>LOGIN</h2>
+
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Password" />
+        <button onclick="login()">Login</button>
+
+        <p id="msg"></p>
+        <p>Don't have an account? <a href="signup.html"> Sign up</a></p>
+        <p>
+          Are you a business?
+          <a href="seller-login.html">Get started here</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Product Details</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="store.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="store.png?v=1">
+    <link rel="shortcut icon" href="store.png?v=1">
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+  </head>
+  <body class="bg-darker-green">
+    <script>
+      // Load saved theme immediately
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.getElementById('pageStyle').setAttribute('href', savedTheme);
+        }
+      })();
+    </script>
+    <div class="header">
+      <div>
+        <h1><a href="index.html"><img src="store.png" alt="Store" style="height: 40px; vertical-align: middle; margin-right: 10px;">Store </a></h1>
+        <a href="game.html"> Play Game</a>
+        <a href="orders.html"> Orders</a>
+        <a href="seller-login.html"> Seller</a>
+        <a href="cart.html"> Cart</a>
+        <a href="wishlist.html"> Wishlist</a>
+        <a href="client.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <div class="coin-display">
+          <div class="coin-badge">
+            <span id="userCoins">0</span> Coins
+          </div>
+        </div>
+        <button onclick="logout()">Logout</button>
+      </div>
+      <div>
+        <h2 id="welcome" align="center"></h2>
+      </div>
+    </div>
+    <div class="product-detail" id="product-details">
+      <div class="empty-message">
+        <h3>Loading...</h3>
+      </div>
+    </div>
+    
+    <div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+      <h2 style="color: #11998e; margin-bottom: 20px;">Similar Products</h2>
+      <div id="similar-products" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="toast.js"></script>
+    <script src="theme.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+
+      async function loadProduct() {
+        if (!id) {
+          document.getElementById("product-details").innerHTML =
+            '<div class="empty-message"><h3>Product not found</h3><button onclick="window.location.href=\'index.html\'">Back to Store</button></div>';
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API_ENDPOINTS.products}/${id}`);
+
+          if (!res.ok) {
+            throw new Error("Failed to load product");
+          }
+
+          const product = await res.json();
+
+          document.getElementById("product-details").innerHTML = `
+            <div>
+              <img src="${product.image}" alt="${product.name}" class="product-image">
+            </div>
+            <div class="product-info">
+              <h2>${product.name}</h2>
+              <span class="product-type">${product.type || "Product"}</span>
+              <div class="product-price">Rs.${product.price}</div>
+              <p class="product-description">${product.description || "No description available"}</p>
+              
+              <div class="product-actions">
+                <button onclick="addToCart('${product._id}')" class="product-btn-primary">
+                  Add to Cart
+                </button>
+                <button onclick="addToWishlist('${product._id}')" class="product-btn-wishlist">
+                  Add to Wishlist
+                </button>
+              </div>
+              
+              <button onclick="window.location.href='index.html'" class="product-btn-back">
+                ← Back to Store
+              </button>
+            </div>
+          `;
+          
+          // Load similar products
+          loadSimilarProducts(product.type, product._id);
+        } catch (err) {
+          document.getElementById("product-details").innerHTML = `
+            <div class="empty-message">
+              <h3>Error loading product</h3>
+              <p>${err.message}</p>
+              <button onclick="window.location.href='index.html'" class="product-btn-error">Back to Store</button>
+            </div>
+          `;
+        }
+      }
+
+      function addToCart(productId) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        fetch(`${API_ENDPOINTS.products}/${productId}`)
+          .then((res) => res.json())
+          .then((product) => {
+            const id = String(product._id);
+            const item = cart.find((p) => p._id === id);
+
+            if (item) {
+              item.qty++;
+            } else {
+              cart.push({
+                _id: id,
+                name: product.name,
+                price: Number(product.price),
+                qty: 1,
+              });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Added to cart");
+            
+            // Show similar products notification
+            const similarSection = document.getElementById("similar-products");
+            if (similarSection && similarSection.children.length > 0) {
+              similarSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          });
+      }
+
+      async function loadSimilarProducts(productType, currentProductId) {
+        try {
+          const res = await fetch(API_ENDPOINTS.products);
+          const allProducts = await res.json();
+          
+          // Filter products of same type, excluding current product
+          const similarProducts = allProducts
+            .filter(p => p.type === productType && p._id !== currentProductId)
+            .slice(0, 4); // Show max 4 similar products
+          
+          const container = document.getElementById("similar-products");
+          
+          if (similarProducts.length === 0) {
+            container.innerHTML = '<p style="color: #666;">No similar products found</p>';
+            return;
+          }
+          
+          container.innerHTML = similarProducts.map(p => `
+            <div class="card" style="cursor: pointer;">
+              <img src="${p.image}" alt="${p.name}" style="width: 100%; height: 150px; object-fit: cover;" onclick="window.location.href='product.html?id=${p._id}'">
+              <h4 style="margin: 10px 0; color: #11998e;" onclick="window.location.href='product.html?id=${p._id}'">${p.name}</h4>
+              <p style="color: #666; font-weight: bold;">Rs.${p.price}</p>
+              <button onclick="quickAddToCart('${p._id}')" style="width: 100%; padding: 8px; background: #11998e; color: white; border: none; cursor: pointer; font-weight: 600;">
+                Quick Add to Cart
+              </button>
+            </div>
+          `).join('');
+        } catch (err) {
+          console.error('Error loading similar products:', err);
+        }
+      }
+      
+      function quickAddToCart(productId) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        fetch(`${API_ENDPOINTS.products}/${productId}`)
+          .then((res) => res.json())
+          .then((product) => {
+            const id = String(product._id);
+            const item = cart.find((p) => p._id === id);
+
+            if (item) {
+              item.qty++;
+            } else {
+              cart.push({
+                _id: id,
+                name: product.name,
+                price: Number(product.price),
+                qty: 1,
+              });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            toast.success(`${product.name} added to cart!`);
+          });
+      }
+
+      function addToWishlist(productId) {
+        const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+        fetch(`${API_ENDPOINTS.products}/${productId}`)
+          .then((res) => res.json())
+          .then((product) => {
+            const id = String(product._id);
+            const item = wishlist.find((p) => p._id === id);
+
+            if (item) {
+              alert("Already in wishlist!");
+              return;
+            }
+
+            wishlist.push({
+              _id: id,
+              name: product.name,
+              price: Number(product.price),
+              description: product.description,
+              image: product.image,
+              type: product.type,
+            });
+
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+            toast.success("Added to wishlist!");
+          });
+      }
+
+      loadProduct();
+    </script>
+    <script src="theme.js"></script>
+  </body>
+</html>

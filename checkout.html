@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Checkout</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="store.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="store.png?v=1">
+    <link rel="shortcut icon" href="store.png?v=1">
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+    <style>
+      .checkout-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      }
+      .box {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 15px;
+        margin: 12px 0;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 16px;
+      }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #11998e;
+      }
+      button {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+      }
+    </style>
+  </head>
+  <body class="bg-green">
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+    <div class="header">
+      <div>
+        <h1><a href="index.html"><img src="store.png" alt="Store" style="height: 40px; vertical-align: middle; margin-right: 10px;">Store </a></h1>
+        <a href="game.html"> Play Game</a>
+        <a href="orders.html"> Orders</a>
+        <a href="seller-login.html"> Seller</a>
+        <a href="cart.html"> Cart</a>
+        <a href="wishlist.html"> Wishlist</a>
+        <a href="client.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <div class="coin-display">
+          <div class="coin-badge"><span id="userCoins">0</span> Coins</div>
+        </div>
+        <button onclick="logout()">Logout</button>
+      </div>
+      <div>
+        <h2 id="welcome" align="center"></h2>
+      </div>
+    </div>
+    <div class="checkout-container">
+      <h2 class="checkout-title">💳 Checkout</h2>
+
+      <div class="box" id="summary"></div>
+
+      <div class="box">
+        <h3 class="checkout-section-title">📍 Shipping Details</h3>
+
+        <input id="name" placeholder="Full Name" />
+        <input id="phone" placeholder="Phone Number" />
+        <textarea
+          id="address"
+          placeholder="Delivery Address"
+          rows="4"
+        ></textarea>
+
+        <button onclick="placeOrder()">Place Order</button>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="toast.js"></script>
+    <script src="theme.js"></script>
+    <script src="checkout.js"></script>
+  </body>
+</html>

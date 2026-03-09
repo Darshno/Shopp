@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My Orders</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="store.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="store.png?v=1">
+    <link rel="shortcut icon" href="store.png?v=1">
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+    <div class="header">
+      <div>
+        <h1><a href="index.html"><img src="store.png" alt="Store" style="height: 40px; vertical-align: middle; margin-right: 10px;">Store </a></h1>
+        <a href="game.html"> Play Game</a>
+        <a href="orders.html"> Orders</a>
+        <a href="seller-login.html"> Seller</a>
+        <a href="cart.html"> Cart</a>
+        <a href="wishlist.html"> Wishlist</a>
+        <a href="client.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <div class="coin-display">
+          <div class="coin-badge"><span id="userCoins">0</span> Coins</div>
+        </div>
+        <button onclick="logout()">Logout</button>
+      </div>
+      <div>
+        <h2 id="welcome" align="center"></h2>
+      </div>
+    </div>
+    <div class="page-container">
+      <h2>My Orders</h2>
+      <div class="page-nav-links">
+        <a href="index.html">← Continue Shopping</a>
+        <a href="cart.html">View Cart</a>
+      </div>
+
+      <div id="orders"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="toast.js"></script>
+    <script src="theme.js"></script>
+    <script src="orders.js"></script>
+  </body>
+</html>

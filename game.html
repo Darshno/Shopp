@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Snake Coin Collector</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="store.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="store.png?v=1">
+    <link rel="shortcut icon" href="store.png?v=1">
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+  </head>
+  <body class="bg-dark-green">
+    <script>
+      // Load saved theme immediately
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.getElementById("pageStyle").setAttribute("href", savedTheme);
+        }
+      })();
+    </script>
+    <div class="header">
+      <div>
+        <h1><a href="index.html"><img src="store.png" alt="Store" style="height: 40px; vertical-align: middle; margin-right: 10px;">Store </a></h1>
+        <a href="game.html"> Play Game</a>
+        <a href="orders.html"> Orders</a>
+        <a href="seller-login.html"> Seller</a>
+        <a href="cart.html"> Cart</a>
+        <a href="wishlist.html"> Wishlist</a>
+        <a href="client.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <div class="coin-display">
+          <div class="coin-badge"><span id="userCoins">0</span> Coins</div>
+        </div>
+        <button onclick="logout()">Logout</button>
+      </div>
+      <div>
+        <h2 id="welcome" align="center"></h2>
+      </div>
+    </div>
+    <div class="game-container">
+      <h1 class="game-title">Snake Coin Collector</h1>
+
+      <div class="instructions">
+        <h3>How to Play:</h3>
+        <ul>
+          <li>Use arrow keys or buttons to control the snake</li>
+          <li>Collect gold coins (+10 coins each)</li>
+          <li>Collect diamonds (+50 coins, rare!)</li>
+          <li>Collect speed boosts for bonus points</li>
+          <li>Don't hit walls or yourself!</li>
+          <li>Longer survival = more bonus coins</li>
+        </ul>
+      </div>
+
+      <div class="game-stats">
+        <div class="stat-box">
+          <h4>Total Coins</h4>
+          <p id="totalCoins">0</p>
+        </div>
+        <div class="stat-box">
+          <h4>Current Score</h4>
+          <p id="currentScore">0</p>
+        </div>
+        <div class="stat-box">
+          <h4>High Score</h4>
+          <p id="highScore">0</p>
+        </div>
+        <div class="stat-box">
+          <h4>📏 Length</h4>
+          <p id="snakeLength">3</p>
+        </div>
+      </div>
+
+      <canvas id="gameCanvas" width="600" height="600"></canvas>
+
+      <div class="game-controls-info">
+        <p><strong>🎮 Controls:</strong></p>
+        <p>💻 Desktop: Use Arrow Keys</p>
+        <p>📱 Mobile: Swipe in any direction</p>
+        <p>⌨️ Press SPACE to start/restart</p>
+      </div>
+
+      <button class="start-btn" onclick="startGame()" id="startBtn">
+        ▶️ Start Game
+      </button>
+
+      <div class="game-over" id="gameOver">
+        <h2>🎮 Game Over!</h2>
+        <p id="finalScore"></p>
+        <p id="coinsEarned"></p>
+        <button class="start-btn" onclick="startGame()">🔄 Play Again</button>
+      </div>
+
+      <a href="index.html" class="shop-link">🛒 Go to Shop & Spend Coins</a>
+      <br /><br />
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="theme.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

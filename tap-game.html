@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Coin Tap Game</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="store.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="store.png?v=1">
+    <link rel="shortcut icon" href="store.png?v=1">
+    <link rel="stylesheet" href="styles.css" id="pageStyle" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      // Load saved theme immediately
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.getElementById('pageStyle').setAttribute('href', savedTheme);
+        }
+      })();
+    </script>
+    <style>
+      .tap-game-container {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        border: 3px solid #38ef7d;
+        text-align: center;
+        user-select: none;
+      }
+      
+      .game-canvas {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        border-radius: 15px;
+        border: 3px solid #11998e;
+        overflow: hidden;
+        touch-action: none;
+        cursor: pointer;
+      }
+      
+      .coin-item {
+        position: absolute;
+        font-size: 40px;
+        cursor: pointer;
+        animation: fall linear;
+        user-select: none;
+        pointer-events: auto;
+      }
+      
+      @keyframes fall {
+        from { transform: translateY(-50px) rotate(0deg); }
+        to { transform: translateY(450px) rotate(360deg); }
+      }
+      
+      .tap-effect {
+        position: absolute;
+        font-size: 24px;
+        font-weight: bold;
+        color: #11998e;
+        animation: fadeUp 0.8s ease-out;
+        pointer-events: none;
+      }
+      
+      @keyframes fadeUp {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+      }
+      
+      .game-over-screen {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 100;
+        text-align: center;
+      }
+      
+      .combo-display {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255,255,255,0.9);
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        color: #11998e;
+        font-size: 18px;
+      }
+      
+      .timer-display {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(255,255,255,0.9);
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        color: #e74c3c;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body class="bg-dark-green">
+    <script>
+      // Load saved theme immediately
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.getElementById('pageStyle').setAttribute('href', savedTheme);
+        }
+      })();
+    </script>
+    <div class="header">
+      <div class="header-top">
+        <div class="header-brand">
+          <h1><a href="index.html"><img src="store.png" alt="Store" style="height: 40px; vertical-align: middle; margin-right: 10px;">Store</a></h1>
+        </div>
+        
+        <div class="header-search">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search products..." 
+            onkeypress="if(event.key==='Enter') window.location.href='index.html?search='+encodeURIComponent(this.value)"
+          />
+          <span class="material-symbols-outlined" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #666; pointer-events: none;">search</span>
+        </div>
+        
+        <div class="header-actions">
+          <div class="coin-badge">
+            <span id="userCoins">0</span> Coins
+          </div>
+          <button class="theme-toggle" onclick="swapStyleSheet()">Girl theme</button>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+      
+      <div class="header-nav">
+        <a href="index.html"> Home</a>
+        <a href="game.html"> Snake Game</a>
+        <a href="tap-game.html"> Tap Game</a>
+        <a href="cart.html"> Cart</a>
+        <a href="wishlist.html"> Wishlist</a>
+        <a href="orders.html"> Orders</a>
+        <a href="seller-login.html"> Seller</a>
+      </div>
+      
+      <div>
+        <h2 id="welcome" align="center"></h2>
+      </div>
+    </div>
+    
+    <div class="tap-game-container">
+      <h1 class="game-title">Coin Tap Game</h1>
+
+      <div class="instructions">
+        <h3>How to Play:</h3>
+        <ul>
+          <li>Tap falling coins to collect them</li>
+          <li>Gold coins = +5 coins</li>
+          <li>Diamonds = +20 coins</li>
+          <li>Stars = +10 coins</li>
+          <li>Build combos for bonus multipliers!</li>
+          <li>Collect as many as you can in 60 seconds</li>
+        </ul>
+      </div>
+
+      <div class="game-stats">
+        <div class="stat-box">
+          <h4>Total Coins</h4>
+          <p id="totalCoins">0</p>
+        </div>
+        <div class="stat-box">
+          <h4>Current Score</h4>
+          <p id="currentScore">0</p>
+        </div>
+        <div class="stat-box">
+          <h4>High Score</h4>
+          <p id="highScore">0</p>
+        </div>
+        <div class="stat-box">
+          <h4>Best Combo</h4>
+          <p id="bestCombo">0</p>
+        </div>
+      </div>
+
+      <div class="game-canvas" id="gameCanvas">
+        <div class="timer-display" id="timer">60s</div>
+        <div class="combo-display" id="combo">Combo: 0x</div>
+        <div class="game-over-screen" id="gameOver">
+          <h2>Game Over!</h2>
+          <p id="finalScore"></p>
+          <p id="coinsEarned"></p>
+          <button class="start-btn" onclick="startGame()">Play Again</button>
+        </div>
+      </div>
+
+      <button class="start-btn" onclick="startGame()" id="startBtn">
+        Start Game
+      </button>
+
+      <a href="index.html" class="shop-link">Go to Shop & Spend Coins</a>
+      <br /><br />
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="theme.js"></script>
+    <script src="tap-game.js"></script>
+  </body>
+</html>
